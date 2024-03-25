@@ -1,12 +1,16 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+
 const Page = () => {
   const router = useRouter();
 
-  return (
-      router.push('/register')
-  );
+  useEffect(() => {
+    router.push('/register');
+  }, [router]);
+
+  return null;
 };
 
 export default Page;
