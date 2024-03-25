@@ -39,7 +39,7 @@ const Page = () => {
 
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:8081/users', {credentials: "include"});
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {credentials: "include"});
         const data = await response.json();
         setData(data);
       } catch (error) {
@@ -49,7 +49,7 @@ const Page = () => {
 
     const fetchUserData = async () => {
       try {
-        const response = await fetch('http://localhost:8081/me', {credentials: "include"});
+        const response = await fetch('${process.env.NEXT_PUBLIC_API_URL}/me', {credentials: "include"});
         const userData = await response.json();
         setUserData(userData);
       } catch (error) {
@@ -71,7 +71,7 @@ const Page = () => {
   const handleDeleteUser = async () => {
     console.log("Selected user at delete:", selectedUser);
     if (selectedUser && selectedUser._id) {
-      const deleteUserUrl = `http://localhost:8081/users/${selectedUser._id}`;
+      const deleteUserUrl = `${process.env.NEXT_PUBLIC_API_URL}/users/${selectedUser._id}`;
 
       try {
         const response = await fetch(deleteUserUrl, {

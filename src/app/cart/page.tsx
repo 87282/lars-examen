@@ -70,7 +70,7 @@ const Page = () => {
 
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:8081/users', {credentials: "include"});
+                const response = await fetch(`http://localhost:8081/users`, {credentials: "include"});
                 const data = await response.json();
                 setData(data);
             } catch (error) {

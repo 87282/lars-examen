@@ -18,7 +18,7 @@ const Page = () => {
   }
   const onSubmit = async (data: any) => {
     try {
-      const apiUrl = 'http://localhost:8081/auth/register';
+      const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/auth/register`;
 
       const response = await fetch(apiUrl, {
         method: 'POST',
