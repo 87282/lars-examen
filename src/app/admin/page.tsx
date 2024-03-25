@@ -5,7 +5,7 @@ import { useForm, Controller } from 'react-hook-form';
 import OverviewUser from "@/app/components/OverviewUser/user";
 import "./page.scss";
 import {Button, Form, Modal, Nav, Row, Tab} from "react-bootstrap";
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import cookieCutter from 'cookie-cutter';
 import {toast, ToastContainer} from "react-toastify";
 
