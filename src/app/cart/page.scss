@@ -1,0 +1,42 @@
+.title__home{
+  color: #000;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 19px;
+  font-family: "verdana", serif;
+
+}
+
+.row__admin{
+  height: 80px;
+  width: auto;
+  padding: 20px;
+  background-color: white;
+}
+
+.text__nav{
+  color: #000;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 19px;
+}
+
+.cart-icon {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.cart-count {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 8px;
+  font-size: 12px;
+}
+

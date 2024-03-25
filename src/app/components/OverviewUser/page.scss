@@ -1,0 +1,55 @@
+.account-row{
+  border-radius: 10px;
+    padding: 10px;
+
+}
+.account-highlight {
+  color: var(--Dark-Blue, #071C44);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 19px; /* 105.556% */
+  border-radius: var(--Spacing-XXS, 2px);
+  border-left: var(--Spacing-XS, 4px) solid var(--Bright-Blue, #2559F6);
+  background: var(--BG-Grey, #F6F6F6);
+  box-shadow: 0px 2px 5px 0px rgba(94, 94, 94, 0.35);
+  padding: 10px;
+
+  &:hover {
+
+  }
+}
+.price{
+  color: #000000;
+}
+.profile-text {
+
+  width: auto;
+  h4 {
+    color: #071c44;
+  }
+  .profile-p {
+    font-size: 0.8rem;
+  }
+}
+.profile-icon {
+  background-color: white;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  padding-left: 7px;
+  padding-right: 7px;
+  border-radius: 6%;
+}
+.padding-10 {
+  padding: 15px;
+}
+p {
+  margin-bottom: 0 !important;
+}
+
+
+.svg__edit{
+  width: 30px;
+}
