@@ -79,7 +79,7 @@ const Page = () => {
 
     useEffect(() => {
         if(!cookieCutter.get('LARS-AUTH')){
-            window.location.href = '/login';
+            router.push('/login');
         }
     }, []);
 

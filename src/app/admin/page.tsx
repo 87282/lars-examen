@@ -34,7 +34,7 @@ const Page = () => {
 
   useEffect(() => {
     if(!cookieCutter.get('LARS-AUTH')){
-      window.location.href = '/login';
+      router.push('/login');
     }
 
     const fetchData = async () => {
@@ -218,7 +218,7 @@ const Page = () => {
             </button>
 
               <button className="btn btn-primary text-end float-end" onClick={() =>{
-                window.location.href = '/products'
+                router.push('/products');
 
               }}>
                 Klanten pagina
@@ -262,7 +262,8 @@ const Page = () => {
         </div>
 
       ) : (
-window.location.href = '/login'    )}
+          ""
+   )}
     </div>
       <ToastContainer position="bottom-right" autoClose={5000} />
 
