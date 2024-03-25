@@ -73,6 +73,7 @@ const Page = () => {
     if (selectedUser && selectedUser._id) {
       const deleteUserUrl = `${process.env.NEXT_PUBLIC_API_URL}/users/${selectedUser._id}`;
 
+      
       try {
         const response = await fetch(deleteUserUrl, {
           method: 'DELETE',
