@@ -72,7 +72,7 @@ const Page = () => {
     console.log("Selected user at delete:", selectedUser);
     if (selectedUser && selectedUser._id) {
       const deleteUserUrl = `${process.env.NEXT_PUBLIC_API_URL}/users/${selectedUser._id}`;
-      
+
       try {
         const response = await fetch(deleteUserUrl, {
           method: 'DELETE',
@@ -96,7 +96,7 @@ const Page = () => {
     console.log(selectedUser)
 
     if (selectedUser && selectedUser._id) {
-      const updateUserUrl = `http://localhost:8081/users/${selectedUser._id}`;
+      const updateUserUrl = `${process.env.NEXT_PUBLIC_API_URL}/users/${selectedUser._id}`;
 
       try {
         const response = await fetch(updateUserUrl, {

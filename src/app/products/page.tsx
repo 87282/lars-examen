@@ -51,7 +51,7 @@ const Page = () => {
     }, [])
     const onSubmit = async (data: FieldValues, productId: number) => {
         try {
-            const url = `http://localhost:8081/product/${productId}`;
+            const url = `${process.env.NEXT_PUBLIC_API_URL}/product/${productId}`;
             const response = await fetch(url, {
                 method: 'PUT',
                 headers: {
@@ -87,12 +87,12 @@ const Page = () => {
         if (userData && userData._id) {
             const fetchCartData = async () => {
                 try {
-                    const response = await fetch(`http://localhost:8081/cart/${userData._id}`, {credentials: "include"});
+                    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart/${userData._id}`, {credentials: "include"});
                     useEffect(() => {
                         if (userData && userData._id) {
                             const fetchCartData = async () => {
                                 try {
-                                    const response = await fetch(`http://localhost:8081/cart/${userData._id}`, {credentials: "include"});
+                                    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart/${userData._id}`, {credentials: "include"});
                                     if (!response.ok) {
                                         throw new Error('Failed to fetch cart data');
                                     }
@@ -140,7 +140,7 @@ const Page = () => {
         const userId = userData?._id;
 
         try {
-            const response = await fetch('http://localhost:8081/cart/add', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart/add`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -157,7 +157,7 @@ const Page = () => {
 
             if (response.ok) {
                 toast.success(`${product.naam} is toegevoegd aan de winkelwagen!`);
-                const updatedCartResponse = await fetch(`http://localhost:8081/cart/${userId}`, { credentials: "include" });
+                const updatedCartResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart/${userId}`, { credentials: "include" });
                 const updatedCartData = await updatedCartResponse.json();
                 setCartItems(updatedCartData.items || []);
             } else {
@@ -170,7 +170,7 @@ const Page = () => {
     };
     const addProduct = async (newProductData: FieldValues) => {
         try {
-            const response = await fetch('http://localhost:8081/createProduct', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/createProduct`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -200,7 +200,7 @@ const Page = () => {
 
     const deleteProduct = async (productId: number) => {
         try {
-            const url = `http://localhost:8081/product/${productId}`;
+            const url = `${process.env.NEXT_PUBLIC_API_URL}/product/${productId}`;
             const response = await fetch(url, {
                 method: 'DELETE',
                 credentials: 'include',
