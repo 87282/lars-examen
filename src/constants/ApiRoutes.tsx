@@ -21,13 +21,13 @@ const ApiRoutes: ApiRoutesInterface = {
         get: 'notes',
     },
     users : {
-        getAll: 'users',
-        getMe: 'me'
+        getAll: '/users',
+        getMe: '/me'
     },
 
     products : {
-        getAll: 'getProducten',
-        deleteProduct: 'product'
+        getAll: '/getProducten',
+        deleteProduct: '/product'
     }
 
 }
