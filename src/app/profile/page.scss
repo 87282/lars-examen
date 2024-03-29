@@ -1,0 +1,128 @@
+.profile-page {
+  background-color: white;
+  margin-top: 60px;
+
+  .sidebar {
+    .sidebar-item {
+      color: blue;
+      &:hover {
+        background-color: lightblue;
+        color: white;
+      }
+    }
+  }
+
+  .order-details {
+    .user-initials {
+      background-color: blue;
+      color: white;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin-right: 1rem;
+    }
+
+    .user-details {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .order-item {
+      background-color: #f8f9fa;
+      margin-bottom: 0.5rem;
+    }
+  }
+}
+
+.list-group-item {
+  border: none;
+  &.active {
+    background-color: blue;
+    color: white;
+  }
+}
+
+.btn-primary {
+  background-color: blue;
+  border-color: blue;
+  &:hover {
+    background-color: darkblue;
+  }
+}
+
+.title__home{
+  color: #000;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 19px;
+  font-family: "verdana", serif;
+
+}
+
+.row__admin{
+  height: 80px;
+  width: auto;
+  padding: 20px;
+  background-color: white;
+}
+
+.text__nav{
+  color: #000;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 19px;
+}
+
+.cart-icon {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.cart-count {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 8px;
+  font-size: 12px;
+}
+
+.sidebar {
+  .nav-tabs {
+    border-bottom: 0;
+    .nav-item {
+      margin-bottom: -1px;
+
+      .nav-link {
+        border: 1px solid transparent;
+        border-radius: 0;
+        color: blue;
+        margin-right: 5px;
+        &.active {
+          color: white;
+          background-color: blue;
+          border-color: blue;
+        }
+        &:hover {
+          border-color: lightblue;
+        }
+      }
+    }
+  }
+
+  .tab-content {
+    border: 1px solid blue;
+    padding: 10px;
+  }
+}
+

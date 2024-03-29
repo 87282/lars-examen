@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import "./page.scss";
 import { Col, Form, Row, Button, InputGroup } from "react-bootstrap";
 import { useRouter } from "next/navigation";
+import {Sidebar} from "@/app/components/Sidebar";
 
 const Page = () => {
   const { register, handleSubmit } = useForm();

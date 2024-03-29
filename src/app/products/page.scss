@@ -120,5 +120,49 @@ svg:hover {
   transform: scale(1.1);
 }
 
+.my-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 15px;
+  border-radius: 8px;
+  border: none;
+  margin: 0.5%;
+  background: #FFFFFF;
+  width: calc(20% - 10px);
 
+  &:hover {
+    transform: scale(1.03);
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .card-header, .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background-color: rgba(0, 0, 0, .03);
+    border-bottom: 1px solid rgba(0, 0, 0, .125);
+  }
+
+  .card-body {
+    padding: 1rem;
+  }
+
+  @media (max-width: 1200px) {
+    width: calc(25% - 10px);
+  }
+
+  @media (max-width: 992px) {
+    width: calc(33.3333% - 10px);
+  }
+
+  @media (max-width: 768px) {
+    width: calc(50% - 10px);
+  }
+
+  @media (max-width: 576px) {
+    width: 100%;
+  }
+}
 

@@ -4,10 +4,12 @@ import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import OverviewUser from "@/app/components/OverviewUser/user";
 import "./page.scss";
-import {Button, Form, Modal, Nav, Row, Tab} from "react-bootstrap";
+import {Button, Container, Form, Modal, Nav, Navbar, Row, Tab} from "react-bootstrap";
 import { useRouter } from 'next/navigation'
 import cookieCutter from 'cookie-cutter';
 import {toast, ToastContainer} from "react-toastify";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faShoppingCart, faSignOutAlt, faUser, faUserTie} from "@fortawesome/free-solid-svg-icons";
 
 interface UserData {
   role: string;
@@ -49,7 +51,7 @@ const Page = () => {
 
     const fetchUserData = async () => {
       try {
-        const response = await fetch('${process.env.NEXT_PUBLIC_API_URL}/me', {credentials: "include"});
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/me`, {credentials: "include"});
         const userData = await response.json();
         setUserData(userData);
       } catch (error) {
@@ -206,31 +208,43 @@ const Page = () => {
 
 
       <div className={"container-fluid bg-light"}>
-      <div className="row row__admin shadow-sm sticky-top">
-        <div className="col-6">
-          <p className={"text__nav"}>Welkom, {userData ? userData.username : 'Loading...'}</p>
-        </div>
-        <div className="col-6">
-          {canViewPage ? (
-              <div>
-            <button className="btn btn-primary text-end float-end" onClick={handleLogout}>
-              Uitloggen
-            </button>
+        <Navbar  expand="lg" className=" row__admin shadow-sm sticky-top">
+          <Container>
+            <Navbar.Brand href="/">  <Navbar.Text>
+              Welkom, {userData ? userData.username : 'Loading...'}
+            </Navbar.Text></Navbar.Brand>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+              <Nav className="me-auto">
+                <Nav.Link href="/profile">
+                  <FontAwesomeIcon icon={faUser} /> Profiel
+                </Nav.Link>
+                <Nav.Link onClick={() => {
+                  router.push('/products')
+                }}>
+                  <FontAwesomeIcon icon={faShoppingCart} /> Producten
+                </Nav.Link>
+              </Nav>
+              <Nav className="ms-auto">
+                {canViewPage ? (
+                    <>
+                      <Nav.Link onClick={() => router.push('/')}>
+                        <FontAwesomeIcon icon={faSignOutAlt} /> Uitloggen
+                      </Nav.Link>
+                      <Nav.Link onClick={() => router.push('/admin')}>
+                        <FontAwesomeIcon icon={faUserTie} /> Admin Portal
+                      </Nav.Link>
 
-              <button className="btn btn-primary text-end float-end" onClick={() =>{
-                router.push('/products');
-
-              }}>
-                Klanten pagina
-              </button>
-              </div>
-          ) : (
-            <p className="text-end text__nav" onClick={handleLoginClick}>
-              Login
-            </p>
-          )}
-        </div>
-      </div>
+                    </>
+                ) : (
+                    <Nav.Link onClick={() => router.push('/login')}>
+                      Login
+                    </Nav.Link>
+                )}
+              </Nav>
+            </Navbar.Collapse>
+          </Container>
+        </Navbar>
       {canViewPage ? (
 
         <div className="row row__admin">

@@ -6,6 +6,9 @@ import {useRouter} from "next/navigation";
 import {toast, ToastContainer} from "react-toastify";
 import cookieCutter from "cookie-cutter";
 import { motion } from 'framer-motion';
+import {Container, Nav, Navbar} from "react-bootstrap";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faShoppingCart, faSignOutAlt, faUser, faUserTie} from "@fortawesome/free-solid-svg-icons";
 
 interface UserData {
     role: string;
@@ -144,36 +147,41 @@ const Page = () => {
     return (
         <>
             <div className={"container-fluid bg-light"}>
-                <div className="row row__admin shadow-sm sticky-top">
-                    <div className="col-6">
-                        <p className={"text__nav"}>Welkom, {userData ? userData.username : 'Loading...'}</p>
-                    </div>
-                    <div className="col-6">
-                        {canViewPage ?
-                            (
-                                <button className="btn btn-primary text-end float-end ml-3" onClick={() => {
-                                    router.push('/admin')
+                <Navbar  expand="lg" className=" row__admin shadow-sm sticky-top">
+                    <Container>
+                        <Navbar.Brand href="/">  <Navbar.Text>
+                            Welkom, {userData ? userData.username : 'Loading...'}
+                        </Navbar.Text></Navbar.Brand>
+                        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                        <Navbar.Collapse id="basic-navbar-nav">
+                            <Nav className="me-auto">
+                                <Nav.Link href="/profile">
+                                    <FontAwesomeIcon icon={faUser} /> Profiel
+                                </Nav.Link>
+                                <Nav.Link onClick={() => {
+                                    router.push('/products')
                                 }}>
-                                    Admin Portal
-                                </button>
-                            ):(
-                                ""
-                            )}
-                        {isLoggedIn ? (
-                            <>
+                                    <FontAwesomeIcon icon={faShoppingCart} /> Producten
+                                </Nav.Link>
+                            </Nav>
+                            <Nav className="ms-auto">
+                                {canViewPage ? (
+                                    <>
+                                        <Nav.Link onClick={() => router.push('/')}>
+                                            <FontAwesomeIcon icon={faSignOutAlt} /> Uitloggen
+                                        </Nav.Link>
+                                        <Nav.Link onClick={() => router.push('/admin')}>
+                                            <FontAwesomeIcon icon={faUserTie} /> Admin Portal
+                                        </Nav.Link>
 
-
-                                <button className="btn btn-primary text-end float-end" onClick={handleLogout}>
-                                    Uitloggen
-                                </button>
-                            </>
-                        ) : (
-                            <p className="text-end text__nav" onClick={handleLoginClick}>
-                                Login
-                            </p>
-                        )}
-                    </div>
-                </div>
+                                    </>
+                                ) : (
+                               ""
+                                )}
+                            </Nav>
+                        </Navbar.Collapse>
+                    </Container>
+                </Navbar>
                 {isLoggedIn ? (
                     <div className="row pt-4 justify-content-center">
                         <div className="col-8">

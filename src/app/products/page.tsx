@@ -9,6 +9,9 @@ import { motion } from 'framer-motion';
 import { FieldValues, useForm} from "react-hook-form";
 import {useProductStore} from "@/stores/ProductStore";
 import userStore, {useUserStore} from "@/stores/UserStore";
+import {Container, Nav, Navbar} from "react-bootstrap";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faShoppingCart, faSignOutAlt, faUser, faUserTie} from "@fortawesome/free-solid-svg-icons";
 
 
 interface UserData {
@@ -259,24 +262,26 @@ const Page = () => {
     return (
         <>
             <div className={"container-fluid bg-light"}>
-                <div className="row row__admin shadow-sm sticky-top">
-                    <div className="col-6">
-                        <p className={"text__nav"}>Welkom, {userData ? userData.username : 'Loading...'}</p>
-                    </div>
-                    <div className="col-6">
-                        {canViewPage ?
-                            (
-                                <button className="btn btn-primary text-end float-end ml-3" onClick={() => {
-                                    router.push('/admin')
+                <Navbar  expand="lg" className=" row__admin shadow-sm sticky-top">
+                    <Container>
+                        <Navbar.Brand href="/">  <Navbar.Text>
+                            Welkom, {userData ? userData.username : 'Loading...'}
+                        </Navbar.Text></Navbar.Brand>
+                        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                        <Navbar.Collapse id="basic-navbar-nav">
+                            <Nav className="me-auto">
+                                <Nav.Link href="/profile">
+                                    <FontAwesomeIcon icon={faUser} /> Profiel
+                                </Nav.Link>
+                                <Nav.Link onClick={() => {
+                                    router.push('/products')
                                 }}>
-                                    Admin Portal
-                                </button>
-                            ):(
-                                ""
-                        )}
-                        {isLoggedIn ? (
-                            <>
-                                <div className="cart-icon">
+                                    <FontAwesomeIcon icon={faShoppingCart} /> Producten
+                                </Nav.Link>
+                            </Nav>
+                            <Nav className="ms-auto">
+
+                                <div className="cart-icon text-start">
                                     <svg onClick={() => {
                                         router.push('/cart')
 
@@ -287,18 +292,25 @@ const Page = () => {
                                     </svg>
                                     <span className="cart-count">{calculateSize()}</span>
                                 </div>
+                                {canViewPage ? (
+                                    <>
 
-                                <button className="btn btn-primary text-end float-end" onClick={handleLogout}>
-                                Uitloggen
-                            </button>
-                            </>
-                        ) : (
-                            <p className="text-end text__nav" onClick={handleLoginClick}>
-                                Login
-                            </p>
-                        )}
-                    </div>
-                </div>
+
+                                        <Nav.Link onClick={() => router.push('/')}>
+                                            <FontAwesomeIcon icon={faSignOutAlt} /> Uitloggen
+                                        </Nav.Link>
+                                        <Nav.Link onClick={() => router.push('/admin')}>
+                                            <FontAwesomeIcon icon={faUserTie} /> Admin Portal
+                                        </Nav.Link>
+
+                                    </>
+                                ) : (
+                               ""
+                                )}
+                            </Nav>
+                        </Navbar.Collapse>
+                    </Container>
+                </Navbar>
                 {isLoggedIn ? (
 
                     <motion.div
@@ -335,7 +347,7 @@ const Page = () => {
                             >
                                 {productData.map((product) => (
                                     <motion.div
-                                        className="card h-100 shadow-sm"
+                                        className="card h-100 shadow-sm my-card"
                                         key={product._id}
                                         variants={{
                                             hidden: { y: 20, opacity: 0 },
@@ -408,8 +420,12 @@ const Page = () => {
                                                         </div>
                                                     )}
                                                 </div>
+                                                <div className="card-header">
                                                 <h6 className="card-subtitle mb-2 text-muted">{product.categorie}</h6>
+                                                </div>
+                                                <div className="card-body">
                                                 <p className="card-text">{product.beschrijving}</p>
+                                                </div>
                                                 <div className="card-footer" style={{ borderTop: '1px solid #eaeaea' }}>
                                                     <small className="text-muted">Prijs: €{product.prijs}</small>
                                                     <button className="btn btn-primary float-end"  onClick={() => addToCart(product)}>Add to Cart</button>
@@ -478,5 +494,6 @@ const Page = () => {
 
     );
 };
+
 
 export default Page;
