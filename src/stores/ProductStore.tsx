@@ -14,14 +14,16 @@ interface ProductStoreState {
     getAllProducts: () => void;
     deleteProduct: (id: number) => void;
 }
+const token = localStorage.getItem('token');
 
 export const useProductStore: UseBoundStore<StoreApi<ProductStoreState>> =
     create<ProductStoreState>((set) => ({
         productData: [],
+
         setProductData: (products) => set({ productData: products }),
 
         getAllProducts: async () => {
-            const response = await fetch(`${ApiRoutes.rootUrl}${ApiRoutes.products.getAll}`, {credentials: "include"});
+            const response = await fetch(`${ApiRoutes.rootUrl}${ApiRoutes.products.getAll}`, {credentials: "include", headers: { 'Content-Type': 'application/json', "Authorization": `Bearer ${token}` }});
             const data = await response.json();
             set({ productData: data });
         },

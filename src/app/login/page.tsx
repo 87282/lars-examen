@@ -17,7 +17,7 @@ const Page = () => {
     setPasswordShown((passwordShown) => !passwordShown)
   }
 
-  const onSubmit = async (data : any) => {
+  const onSubmit = async (data: any) => {
     try {
       const url = `${process.env.NEXT_PUBLIC_API_URL}/auth/login`;
 
@@ -31,12 +31,11 @@ const Page = () => {
       });
 
       if (response.ok) {
+        const { token } = await response.json();
+        localStorage.setItem('token', token);
         toast.success("Inloggen gelukt!");
         console.log(data)
-
-
         router.push('/products');
-
       } else {
         toast.error("Onjuiste gegevens");
       }
@@ -45,6 +44,7 @@ const Page = () => {
       toast.error("Er is een fout opgetreden bij het inloggen.");
     }
   };
+
 
   return (
     <>

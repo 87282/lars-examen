@@ -35,7 +35,7 @@ const Page = () => {
     const store = useProductStore();
     const userStore = useUserStore();
     const userData = userStore.UserData;
-
+    const token = localStorage.getItem('token');
     const canViewPage = userData && userData.role === "admin";
     const [data, setData] = useState<UserData[]>([]);
     const [isLoggedIn, setLoggedIn] = useState(true);
@@ -59,6 +59,7 @@ const Page = () => {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify(data),
                 credentials: 'include',
@@ -147,6 +148,7 @@ const Page = () => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify({
                     userId,
@@ -177,6 +179,7 @@ const Page = () => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify(newProductData),
                 credentials: 'include',
