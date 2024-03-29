@@ -240,6 +240,7 @@ const Page = () => {
                     <Nav.Link onClick={() => router.push('/login')}>
                       <FontAwesomeIcon icon={faSignOutAlt} /> Uitloggen
                     </Nav.Link>
+                    
                 )}
               </Nav>
             </Navbar.Collapse>
