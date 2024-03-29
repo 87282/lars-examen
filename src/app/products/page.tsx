@@ -35,8 +35,7 @@ const Page = () => {
     const store = useProductStore();
     const userStore = useUserStore();
     const userData = userStore.UserData;
-    const token = localStorage.getItem('token');
-    const canViewPage = userData && userData.role === "admin";
+     const canViewPage = userData && userData.role === "admin";
     const [data, setData] = useState<UserData[]>([]);
     const [isLoggedIn, setLoggedIn] = useState(true);
     const router = useRouter();
@@ -54,12 +53,17 @@ const Page = () => {
     }, [])
     const onSubmit = async (data: FieldValues, productId: number) => {
         try {
+            let token;
+            if (typeof window !== "undefined") {
+                token = localStorage.getItem('token');
+            }
+
             const url = `${process.env.NEXT_PUBLIC_API_URL}/product/${productId}`;
             const response = await fetch(url, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
+                    ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
                 },
                 body: JSON.stringify(data),
                 credentials: 'include',
@@ -70,10 +74,6 @@ const Page = () => {
             }
 
             toast.success(`${data.naam} is succesvol aangepast!`);
-
-            setIsEditing(null);
-
-            store.getAllProducts();
         } catch (error) {
             console.error('Error updating product:', error);
             toast.error('Fout bij het updaten van het product. Probeer het opnieuw.');
