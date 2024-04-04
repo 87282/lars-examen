@@ -16,6 +16,7 @@ interface UserData {
   _id: number;
   username: string;
   email: string;
+  password: string;
 }
 
 const Page = () => {
@@ -26,7 +27,7 @@ const Page = () => {
   const router = useRouter();
   const [show, setShow] = useState(false);
   const [userData, setUserData] = useState<UserData[]>([]);
-
+const [ showNewUserModal, setShowNewUserModal ] = useState(false);
 
   const canViewPage = userData && userData.role !== "user";
 
@@ -40,8 +41,15 @@ const Page = () => {
     }
 
     const fetchData = async () => {
+      let token;
+      if (typeof window !== "undefined") {
+        token = localStorage.getItem('token');
+      }
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {credentials: "include"});
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {credentials: "include", headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },});
         const data = await response.json();
         setData(data);
       } catch (error) {
@@ -50,8 +58,15 @@ const Page = () => {
     };
 
     const fetchUserData = async () => {
+      let token;
+      if (typeof window !== "undefined") {
+        token = localStorage.getItem('token');
+      }
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/me`, {credentials: "include"});
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/me`, {credentials: "include", headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },});
         const userData = await response.json();
         setUserData(userData);
       } catch (error) {
@@ -71,6 +86,10 @@ const Page = () => {
     setValue('role', user.role);
   };
   const handleDeleteUser = async () => {
+    let token;
+    if (typeof window !== "undefined") {
+      token = localStorage.getItem('token');
+    }
     console.log("Selected user at delete:", selectedUser);
     if (selectedUser && selectedUser._id) {
       const deleteUserUrl = `${process.env.NEXT_PUBLIC_API_URL}/users/${selectedUser._id}`;
@@ -79,6 +98,10 @@ const Page = () => {
         const response = await fetch(deleteUserUrl, {
           method: 'DELETE',
           credentials: "include",
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
         });
         if (response.ok) {
           toast.success('Gebruiker succesvol verwijderd');
@@ -94,8 +117,46 @@ const Page = () => {
     }
   };
 
+  const onSubmitNewUser = async (formData: any) => {
+    let token;
+    if (typeof window !== "undefined") {
+      token = localStorage.getItem('token');
+    }
+    const createUserUrl = `${process.env.NEXT_PUBLIC_API_URL}/auth/register`;
+
+    const { password, ...formDataWithoutPassword } = formData;
+
+    try {
+      const response = await fetch(createUserUrl, {
+        method: 'POST',
+        body: JSON.stringify(formData),
+        credentials: "include",
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        handleClose();
+        const newUser: UserData = await response.json();
+        toast.success('Gebruiker succesvol aangemaakt');
+        setData(prevData => [...prevData, newUser]);
+        setShowNewUserModal(false);
+
+      } else {
+        toast.error('Er is iets misgegaan bij het aanmaken van de gebruiker');
+      }
+    } catch (error) {
+      console.error('Error creating user:', error);
+      toast.error('Er is een fout opgetreden');
+    }
+  }
   const onSubmit = async (formData: any) => {
-    console.log(selectedUser)
+    let token;
+    if (typeof window !== "undefined") {
+      token = localStorage.getItem('token');
+    }
 
     if (selectedUser && selectedUser._id) {
       const updateUserUrl = `${process.env.NEXT_PUBLIC_API_URL}/users/${selectedUser._id}`;
@@ -103,11 +164,12 @@ const Page = () => {
       try {
         const response = await fetch(updateUserUrl, {
           method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
           body: JSON.stringify(formData),
           credentials: "include",
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
         });
 
         if (response.ok) {
@@ -124,20 +186,66 @@ const Page = () => {
     }
   };
 
-  const handleLoginClick = () => {
-    router.push('/login');
-  };
 
-  const handleLogout = () => {
-    cookieCutter.set('LARS-AUTH', '', { expires: new Date(0) });
-
-    setLoggedIn(false);
-    toast.success('U bent uitgelogd');
-    router.push('/login');
-  };
 
   return (
     <>
+      <Modal show={showNewUserModal} onHide={() => setShowNewUserModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Nieuwe gebruiker aanmaken</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleSubmit(onSubmitNewUser)}>
+            <Form.Group className="mb-3">
+              <Form.Label>Gebruikersnaam</Form.Label>
+              <Controller
+                  name="username"
+                  control={control}
+                  render={({ field }) => <Form.Control {...field} placeholder="Gebruikersnaam" />}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Email</Form.Label>
+              <Controller
+                  name="email"
+                  control={control}
+                  render={({ field }) => <Form.Control type="email" {...field} placeholder="Email" />}
+              />
+            </Form.Group>
+
+
+            <Form.Group className="mb-3">
+              <Form.Label>Wachtwoord</Form.Label>
+              <Controller
+                  name="password"
+                  control={control}
+                  render={({ field }) => <Form.Control type="password" {...field} placeholder="Wachtwoord" />}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Rol</Form.Label>
+              <Controller
+                  name="role"
+                  control={control}
+                  render={({ field }) => (
+                      <Form.Select {...field}>
+                        <option value="user">Gebruiker</option>
+                        <option value="admin">Admin</option>
+                      </Form.Select>
+                  )}
+              />
+            </Form.Group>
+            <button className={"btn btn-primary"} type={"submit"}>Opslaan</button>
+          </Form>
+        </Modal.Body>
+      </Modal>
+
+
+
+
+
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Header closeButton>
           <Modal.Title>Account informatie van {selectedUser ? selectedUser.username : 'Gebruiker'}</Modal.Title>
@@ -210,7 +318,7 @@ const Page = () => {
       <div className={"container-fluid bg-light"}>
         <Navbar  expand="lg" className=" row__admin shadow-sm sticky-top">
           <Container>
-            <Navbar.Brand href="/">  <Navbar.Text>
+            <Navbar.Brand>  <Navbar.Text>
               Welkom, {userData ? userData.username : 'Loading...'}
             </Navbar.Text></Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -240,7 +348,7 @@ const Page = () => {
                     <Nav.Link onClick={() => router.push('/login')}>
                       <FontAwesomeIcon icon={faSignOutAlt} /> Uitloggen
                     </Nav.Link>
-                    
+
                 )}
               </Nav>
             </Navbar.Collapse>
@@ -270,6 +378,10 @@ const Page = () => {
                 }
               />
             ))}
+            <button className={"btn btn-primary"} onClick={() => {
+                setShowNewUserModal(true);
+
+            }}>+ Maak een nieuwe gebruiker</button>
           </div>
           <div className="col-4">
 

@@ -3,10 +3,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 
-
-
-
-
 export default function RootLayout({
   children,
 }: {

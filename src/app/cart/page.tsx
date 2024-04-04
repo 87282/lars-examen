@@ -45,35 +45,21 @@ const Page = () => {
     const [cartItems, setCartItems] = useState<ProductData[]>([]);
     const [totalPrice, setTotalPrice] = useState<number>(0);
 
-    const handleLoginClick = () => {
-        router.push('/login');
-    };
 
-    const handleLogout = () => {
-        cookieCutter.set('LARS-AUTH', '', { expires: new Date(0) });
-
-        setLoggedIn(false);
-        toast.success('U bent uitgelogd');
-        router.push('/login');
-    };
-
-    const calculateSize = () => {
-        let size = 0;
-        cartItems.forEach((item) => {
-            size += item.aantal;
-        });
-        return size;
-    }
 
     useEffect(() => {
-        if(!cookieCutter.get('LARS-AUTH')){
-            router.push('/login');
 
-        }
 
         const fetchData = async () => {
+            let token;
+            if (typeof window !== "undefined") {
+                token = localStorage.getItem('token');
+            }
             try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/`, {credentials: "include"});
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/`, {credentials: "include", headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },});
                 const data = await response.json();
                 setData(data);
             } catch (error) {
@@ -82,8 +68,18 @@ const Page = () => {
         };
 
         const fetchUserData = async () => {
+            let token;
+            if (typeof window !== "undefined") {
+                token = localStorage.getItem('token');
+            }
             try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/me`, {credentials: "include"});
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/me`
+                ,{headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`,
+                        },
+                credentials: "include"}
+                );
                 const userData = await response.json();
                 setUserData(userData);
             } catch (error) {
@@ -96,9 +92,16 @@ const Page = () => {
 
     useEffect(() => {
         const fetchCartData = async () => {
+            let token;
+            if (typeof window !== "undefined") {
+                token = localStorage.getItem('token');
+            }
             try {
                 if (userData && userData._id) {
-                    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart/${userData._id}`, { credentials: "include" });
+                    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart/${userData._id}`, { credentials: "include", headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`,
+                        }, });
                     if (!response.ok) {
                         throw new Error('Failed to fetch cart data');
                     }
@@ -149,7 +152,7 @@ const Page = () => {
             <div className={"container-fluid bg-light"}>
                 <Navbar  expand="lg" className=" row__admin shadow-sm sticky-top">
                     <Container>
-                        <Navbar.Brand href="/">  <Navbar.Text>
+                        <Navbar.Brand>  <Navbar.Text>
                             Welkom, {userData ? userData.username : 'Loading...'}
                         </Navbar.Text></Navbar.Brand>
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />

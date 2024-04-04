@@ -56,12 +56,16 @@ const Page = () => {
 
         if (userData && userData._id) {
             const updateUserUrl = `${process.env.NEXT_PUBLIC_API_URL}/users/${userData._id}`;
-
+let token;
+        if (typeof window !== 'undefined') {
+            token = localStorage.getItem('token');
+        }
             try {
                 const response = await fetch(updateUserUrl, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
                     },
                     body: JSON.stringify(formData),
                     credentials: "include",
@@ -171,7 +175,7 @@ const Page = () => {
         <>
             <Navbar  expand="lg" className=" row__admin shadow-sm sticky-top">
                 <Container>
-                    <Navbar.Brand href="/">  <Navbar.Text>
+                    <Navbar.Brand >  <Navbar.Text>
                         Welkom, {userData ? userData.username : 'Loading...'}
                     </Navbar.Text></Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />

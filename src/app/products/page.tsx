@@ -142,6 +142,15 @@ const Page = () => {
 
     const addToCart = async (product: ProductData) => {
         const userId = userData?._id;
+        let token;
+        if (typeof window !== "undefined") {
+            token = localStorage.getItem('token');
+        }
+
+        if (!token) {
+            toast.error('Je bent niet ingelogd.');
+            return;
+        }
 
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart/add`, {
@@ -173,7 +182,16 @@ const Page = () => {
             toast.error('Fout bij het communiceren met de server.');
         }
     };
+
     const addProduct = async (newProductData: FieldValues) => {
+        let token;
+        if (typeof window !== "undefined") {
+            token = localStorage.getItem('token');
+        }
+        if (!token) {
+            toast.error('Je bent niet ingelogd.');
+            return;
+        }
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/createProduct`, {
                 method: 'POST',
@@ -267,7 +285,7 @@ const Page = () => {
             <div className={"container-fluid bg-light"}>
                 <Navbar  expand="lg" className=" row__admin shadow-sm sticky-top">
                     <Container>
-                        <Navbar.Brand href="/">  <Navbar.Text>
+                        <Navbar.Brand >  <Navbar.Text>
                             Welkom, {userData ? userData.username : 'Loading...'}
                         </Navbar.Text></Navbar.Brand>
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
